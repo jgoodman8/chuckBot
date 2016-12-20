@@ -10,6 +10,41 @@
 
 module.exports = (robot) ->
 
+  devServer = 193.3
+
+  robot.hear /deploy dev front/i, (res) ->
+     res.send "Deploying front in dev..."
+
+  robot.respond /host lookup (.*)$/i, (msg) ->
+    hostname = msg.match[1]
+    @exec = require('child_process').exec
+    command = "host #{hostname}"
+
+    msg.send "Looking up #{hostname}..."
+    msg.send "This is the command #{command}."
+
+    @exec command, (error, stdout, stderr) ->
+      msg.send error
+      msg.send stdout
+      msg.send stderr
+
+  robot.respond /deploy (.*) (.*)$/i, (res) ->
+    env = res.match[1]
+    side = res.match[2]
+    res.send "Deploying #{side} in #{env}..."
+
+    @exec = require('child_process').exec
+    command = ""
+
+    if env is "dev"
+      if side is "front"
+        command = "sh ~/deployDevFront.sh"
+      if side is "back"
+        command = "sh ~/deployDevBack.sh"
+    
+    @exec command, (error, stdout, stderr) ->
+      res.send "Deployment completed!"
+
   # robot.hear /badger/i, (res) ->
   #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
   #
