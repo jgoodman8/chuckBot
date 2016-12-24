@@ -28,7 +28,7 @@ module.exports = (robot) ->
 #      msg.send stdout
 #      msg.send stderr
 
-  robot.respond /deploy (.*) (.*)$/i, (res) ->
+  robot.hear /deploy (.*) (.*)$/i, (res) ->
     env = res.match[1]
     side = res.match[2]
     res.send "Deploying #{side} in #{env}..."
@@ -45,16 +45,16 @@ module.exports = (robot) ->
     @exec command, (error, stdout, stderr) ->
       res.send "Deployment completed!"
 
-  # robot.hear /badger/i, (res) ->
-  #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
-  #
-  # robot.respond /open the (.*) doors/i, (res) ->
-  #   doorType = res.match[1]
-  #   if doorType is "pod bay"
-  #     res.reply "I'm afraid I can't let you do that."
-  #   else
-  #     res.reply "Opening #{doorType} doors"
-  #
+   robot.hear /inets/i, (res) ->
+     res.send "Inets..... HAHAHAHAHAHA"
+  
+   robot.hear /open the door to (.*)/i, (res) ->
+     doorType = res.match[1]
+     if doorType is "slackbot"
+       res.reply "I'm afraid I can't let you do that."
+     else
+       res.reply "Opening doot to #{doorType}"
+  
   # robot.hear /I like pie/i, (res) ->
   #   res.emote "makes a freshly baked pie"
   #
